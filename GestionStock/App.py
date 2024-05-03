@@ -29,6 +29,7 @@ class Login(QtWidgets.QDialog):
         super(Login, self).__init__(parent)
         self.textName = QtWidgets.QLineEdit(self)
         self.textPass = QtWidgets.QLineEdit(self)
+        self.textPass.setEchoMode(QtWidgets.QLineEdit.Password)  # Set password echo mode
         self.buttonLogin = QtWidgets.QPushButton('Admin Login', self)
         self.buttonLogin.clicked.connect(self.handleLogin)
 
@@ -36,7 +37,6 @@ class Login(QtWidgets.QDialog):
         layout.addWidget(self.textName)
         layout.addWidget(self.textPass)
         layout.addWidget(self.buttonLogin)
-
 
     def handleLogin(self):
         if (self.textName.text() == 'admin' and

@@ -6,7 +6,6 @@ def create_tables():
         c = conn.cursor()
 
 
-        # Create clients table if not exists
         c.execute('''CREATE TABLE IF NOT EXISTS clients (
                            client_id INTEGER PRIMARY KEY,
                            nom TEXT,
@@ -15,7 +14,7 @@ def create_tables():
                            telephone TEXT
                            )''')
 
-        # Create fournisseurs table if not exists
+
         c.execute('''CREATE TABLE IF NOT EXISTS fournisseurs (
                            fournisseur_id INTEGER PRIMARY KEY,
                            nom TEXT,
@@ -24,7 +23,7 @@ def create_tables():
                            telephone TEXT
                            )''')
 
-        # Create produits table if not exists
+
         c.execute('''CREATE TABLE IF NOT EXISTS produits (
                                produit_id INTEGER PRIMARY KEY,
                                nom TEXT,
@@ -35,7 +34,7 @@ def create_tables():
                                FOREIGN KEY (fournisseur_id) REFERENCES fournisseurs(fournisseur_id)
                                )''')
 
-        # Create commandes table if not exists
+
         c.execute('''CREATE TABLE IF NOT EXISTS commandes (
                            commande_id INTEGER PRIMARY KEY,
                            id_client INTEGER,

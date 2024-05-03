@@ -39,7 +39,7 @@ class Login(QtWidgets.QDialog):
 
 
     def handleLogin(self):
-        if (self.textName.text() == 'Admin' and
+        if (self.textName.text() == 'admin' and
             self.textPass.text() == 'RSM'):
             self.accept()
         else:
@@ -177,7 +177,7 @@ class stackedExample(QWidget):
         # Search bar
         search_layout = QHBoxLayout()
         lbl_client_id = QLabel()
-        lbl_client_id.setText("Enter Client ID:")
+        lbl_client_id.setText("Enter Client Name:")
         txt_client_id = QLineEdit()
         btn_search_client = QPushButton()
         btn_search_client.setText("Search")
@@ -282,17 +282,17 @@ class stackedExample(QWidget):
         self.ok_add = QPushButton('Ajouter Produit', self)
         cancel = QPushButton('Annuler', self)
 
-        self.product_name = QLineEdit()
-        layout.addRow("Nom du produit", self.product_name)
+        self.produit_name = QLineEdit()
+        layout.addRow("Nom du produit", self.produit_name)
 
-        self.product_description = QLineEdit()
-        layout.addRow("Description", self.product_description)
+        self.produit_description = QLineEdit()
+        layout.addRow("Description", self.produit_description)
 
-        self.product_price = QLineEdit()
-        layout.addRow("Prix", self.product_price)
+        self.produit_prix = QLineEdit()
+        layout.addRow("Prix", self.produit_prix)
 
-        self.product_quantity = QLineEdit()
-        layout.addRow("Quantité en stock", self.product_quantity)
+        self.produit_quantity = QLineEdit()
+        layout.addRow("Quantité en stock", self.produit_quantity)
 
 
         self.fournisseur_combobox = QComboBox()
@@ -306,14 +306,14 @@ class stackedExample(QWidget):
         layout.addWidget(cancel)
         self.tab1.setLayout(layout)
 
-        self.ok_add.clicked.connect(lambda: self.Ajouter_produit_à_db(self.fournisseur_combobox.currentData()))
+        self.ok_add.clicked.connect(lambda: self.Ajouter_produit_a_db(self.fournisseur_combobox.currentData()))
         cancel.clicked.connect(self.clear_product_fields)
 
-    def Ajouter_produit_à_db(self, fournisseur_id):
-        name = self.product_name.text()
-        description = self.product_description.text()
-        price = self.product_price.text()
-        quantity = self.product_quantity.text()
+    def Ajouter_produit_a_db(self, fournisseur_id):
+        name = self.produit_name.text()
+        description = self.produit_description.text()
+        price = self.produit_prix.text()
+        quantity = self.produit_quantity.text()
 
         if name and description and price and quantity:
             try:
@@ -327,31 +327,37 @@ class stackedExample(QWidget):
         else:
             print("Veuillez remplir tous les champs.")
 
+    def clear_product_fields(self):
+        self.produit_name.clear()
+        self.produit_description.clear()
+        self.produit_prix.clear()
+        self.produit_quantity.clear()
+
     def tab2UI(self):
         layout = QVBoxLayout()
 
         self.ok_modify = QPushButton('Modifier Produit', self)
         cancel_modify = QPushButton('Annuler', self)
 
-        self.modify_product_id = QLineEdit()
+        self.modify_produit_id = QLineEdit()
         layout.addWidget(QLabel("Produit ID:"))
-        layout.addWidget(self.modify_product_id)
+        layout.addWidget(self.modify_produit_id)
 
-        self.modify_product_name = QLineEdit()
+        self.modify_produit_name = QLineEdit()
         layout.addWidget(QLabel("Nouveau nom du Produit:"))
-        layout.addWidget(self.modify_product_name)
+        layout.addWidget(self.modify_produit_name)
 
-        self.modify_product_description = QLineEdit()
+        self.modify_produit_description = QLineEdit()
         layout.addWidget(QLabel("Nouveau Description:"))
-        layout.addWidget(self.modify_product_description)
+        layout.addWidget(self.modify_produit_description)
 
-        self.modify_product_price = QLineEdit()
+        self.modify_produit_prix = QLineEdit()
         layout.addWidget(QLabel("Nouveau PriX:"))
-        layout.addWidget(self.modify_product_price)
+        layout.addWidget(self.modify_produit_prix)
 
-        self.modify_product_quantity = QLineEdit()
+        self.modify_produit_quantity = QLineEdit()
         layout.addWidget(QLabel("Nouveau Quantité:"))
-        layout.addWidget(self.modify_product_quantity)
+        layout.addWidget(self.modify_produit_quantity)
 
         layout.addWidget(self.ok_modify)
         layout.addWidget(cancel_modify)
@@ -362,30 +368,32 @@ class stackedExample(QWidget):
         self.tab2.setLayout(layout)
 
     def modifier_produit_dans_db(self):
-        produit_id = self.modify_product_id.text()
-        nom = self.modify_product_name.text()
-        description = self.modify_product_description.text()
-        prix = self.modify_product_price.text()
-        Quantité = self.modify_product_quantity.text()
+        produit_id = self.modify_produit_id.text()
+        nom = self.modify_produit_name.text()
+        description = self.modify_produit_description.text()
+        prix = self.modify_produit_prix.text()
+        quantite = self.modify_produit_quantity.text()
 
-        if produit_id and nom and description and prix and Quantité:
+        if produit_id and nom and description and prix and quantite:
             try:
-                product_id = int(produit_id)
+                produit_id = int(produit_id)
                 prix = float(prix)
-                quantity = int(Quantité)
-                produit = Produit(nom, description, prix, quantity)
-                result = produit.update_in_database(product_id)
+                quantite = int(quantite)
+                produit = Produit(nom, description, prix, quantite, fournisseur_id=1)
+                result = produit.update_in_database(produit_id)
                 print(result)
             except ValueError:
                 print("L'identifiant du produit doit être un entier. Le prix doit être un nombre et la quantité doit être un entier.")
         else:
             print("Veuillez remplir tous les champs.")
 
-    def clear_product_fields(self):
-        self.product_name.clear()
-        self.product_description.clear()
-        self.product_price.clear()
-        self.product_quantity.clear()
+
+    def clear_modify_fields(self):
+        self.modify_produit_id.clear()
+        self.modify_produit_name.clear()
+        self.modify_produit_description.clear()
+        self.modify_produit_prix.clear()
+        self.modify_produit_quantity.clear()
 
     def tab3UI(self):
         layout = QVBoxLayout()
@@ -404,7 +412,7 @@ class stackedExample(QWidget):
 
 
         self.product_table = QTableWidget()
-        self.product_table.setColumnCount(5)  # Update to 5 columns
+        self.product_table.setColumnCount(5)
         self.product_table.setHorizontalHeaderLabels(['ID', 'Nom', 'Description', 'Prix Unitaire', 'Quantité en Stock'])
 
 
@@ -755,12 +763,7 @@ class stackedExample(QWidget):
         else:
             QMessageBox.warning(self, "Avertissement", "Veuillez sélectionner un fournisseur à supprimer.")
 
-    def clear_modify_fields(self):
-        self.modify_product_id.clear()
-        self.modify_product_name.clear()
-        self.modify_product_description.clear()
-        self.modify_product_price.clear()
-        self.modify_product_quantity.clear()
+
 
 
     def load_products(self):

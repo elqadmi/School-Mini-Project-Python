@@ -44,6 +44,18 @@ class Fournisseur:
         except Exception as e:
             return f"Erreur lors de la mise à jour du fournisseur dans la base de données : {str(e)}"
 
+    def search_by_name(keyword):
+        try:
+            conn = sqlite3.connect('stock.db')
+            c = conn.cursor()
+            c.execute("SELECT * FROM fournisseurs WHERE nom LIKE ?", ('%' + keyword + '%',))
+            fournisseurs = c.fetchall()
+            conn.close()
+            return fournisseurs
+        except Exception as e:
+            print(f"Erreur lors de la recherche de fournisseurs par nom : {str(e)}")
+            return None
+
     @staticmethod
     def delete_from_database(fournisseur_id):
         try:

@@ -174,16 +174,16 @@ class stackedExample(QWidget):
     def tab10UI(self):
         layout = QVBoxLayout()
 
-        # Search bar
+
         search_layout = QHBoxLayout()
         lbl_client_id = QLabel()
         lbl_client_id.setText("Enter Client Name:")
-        txt_client_id = QLineEdit()
+        self.conf_text_client = QLineEdit()
         btn_search_client = QPushButton()
         btn_search_client.setText("Search")
         btn_search_client.clicked.connect(self.load_searched_client)
         search_layout.addWidget(lbl_client_id)
-        search_layout.addWidget(txt_client_id)
+        search_layout.addWidget(self.conf_text_client)
         search_layout.addWidget(btn_search_client)
 
         self.client_table = QTableWidget()
@@ -219,10 +219,10 @@ class stackedExample(QWidget):
             self.client_table.setItem(0, 0, QTableWidgetItem("No clients found in the database."))
 
     def load_searched_client(self):
-        client_id = self.conf_text_client.text()
+        c_name = self.conf_text_client.text()
         self.client_table.setRowCount(0)
-        if client_id:
-            clients = Client.search_by_id(client_id)
+        if c_name:
+            clients = Client.search_by_name(c_name)
         else:
             clients = Client.get_all_clients()
 
@@ -681,16 +681,16 @@ class stackedExample(QWidget):
     def tab8UI(self):
         layout = QVBoxLayout()
 
-        # Search bar
+
         search_layout = QHBoxLayout()
         lbl_fournisseur_id = QLabel()
-        lbl_fournisseur_id.setText("Enter Fournisseur ID:")
-        txt_fournisseur_id = QLineEdit()
+        lbl_fournisseur_id.setText("Enter Fournisseur nom:")
+        self.conf_text_fournisseur = QLineEdit()
         btn_search_fournisseur = QPushButton()
         btn_search_fournisseur.setText("Recherche")
         btn_search_fournisseur.clicked.connect(self.load_searched_fournisseur)
         search_layout.addWidget(lbl_fournisseur_id)
-        search_layout.addWidget(txt_fournisseur_id)
+        search_layout.addWidget(self.conf_text_fournisseur)
         search_layout.addWidget(btn_search_fournisseur)
 
 
@@ -729,10 +729,10 @@ class stackedExample(QWidget):
             self.fournisseur_table.setItem(0, 0, QTableWidgetItem("Aucun fournisseur trouvé dans la base de données."))
 
     def load_searched_fournisseur(self):
-        fournisseur_id = self.conf_text_fournisseur.text()
+        fourniss_name = self.conf_text_fournisseur.text()
         self.fournisseur_table.setRowCount(0)
-        if fournisseur_id:
-            fournisseurs = Fournisseur.search_by_id(fournisseur_id)
+        if fourniss_name:
+            fournisseurs = Fournisseur.search_by_name(fourniss_name)
         else:
             fournisseurs = Fournisseur.get_all_fournisseurs()
 
@@ -764,22 +764,8 @@ class stackedExample(QWidget):
             QMessageBox.warning(self, "Avertissement", "Veuillez sélectionner un fournisseur à supprimer.")
 
 
-
-
-    def load_products(self):
-        self.product_list.clear()
-        produits = Produit.get_all_produits()
-        if produits:
-            for produit in produits:
-                self.product_list.addItem(
-                    f"ID: {produit[0]}, Nom: {produit[1]}, Description: {produit[2]}, Prix Unitaire: {produit[3]}, Quantité en Stock: {produit[4]}")
-        else:
-            self.product_list.addItem("Aucun produit trouvé dans la base de données.")
-
-
     def display(self, i):
         self.Stack.setCurrentIndex(i)
-
 
 
 if __name__ == '__main__':

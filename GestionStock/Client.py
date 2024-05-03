@@ -46,6 +46,19 @@ class Client:
             return f"Erreur lors de la mise à jour du client dans la base de données : {str(e)}"
 
     @staticmethod
+    def search_by_name(keyword):
+        try:
+            conn = sqlite3.connect('stock.db')
+            c = conn.cursor()
+            c.execute("SELECT * FROM clients WHERE nom LIKE ?", ('%' + keyword + '%',))
+            clients = c.fetchall()
+            conn.close()
+            return clients
+        except Exception as e:
+            print(f"Erreur lors de la recherche de clients par nom : {str(e)}")
+            return None
+
+    @staticmethod
     def delete_from_database(client_id):
         try:
             conn = sqlite3.connect('stock.db')
